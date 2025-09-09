@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,9 +17,11 @@ public class Client {
 
     private String name;
     private String lastName;
-    private String email;
-    private String password;
-    private int fidility_point;
+    private int fidelity_point;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 
     //getter et setter
 
@@ -42,25 +46,14 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public int getFidelity_point() {
+        return fidelity_point;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFidelity_point(int fidelity_point) {
+        this.fidelity_point = fidelity_point;
     }
-
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getFidility_point() {
-        return fidility_point;
-    }
-    public void setFidility_point(int fidility_point) {
-        this.fidility_point = fidility_point;
-    }
+    
+    public AppUser GetUser(){return user;}
+    public void SetUser(AppUser user) {this.user = user;}
 
 }
