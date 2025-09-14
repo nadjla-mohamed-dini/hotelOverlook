@@ -45,6 +45,6 @@ public class Employee {
         this.lastName = lastName;
     }
     
-    public AppUser GetUser(){return user;}
-    public void SetUser(AppUser user) {this.user = user;} 
+    public AppUser getUser(){return user;}
+    public void setUser(AppUser user) {this.user = user;} 
 }
