@@ -45,10 +45,12 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
-                .loginPage("/auth/login")        // page de login personnalisée
+                .loginPage("/auth/login")            // page de login personnalisée
+                .loginProcessingUrl("/auth/login")   
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .successHandler(successHandler)  // redirection dynamique selon rôle
+                .successHandler(successHandler)      // redirection selon rôle
+                .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/auth/logout")
@@ -58,4 +60,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }
