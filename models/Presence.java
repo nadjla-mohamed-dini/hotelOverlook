@@ -30,26 +30,14 @@ public class Presence {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
-    public LocalDate getDateStart() {
-        return date_start;
-    }
-    public void setDateStart(LocalDate date_start){
-        this.date_start = date_start;
-    }
+    public LocalDate getDateStart() {return date_start;}
+    public void setDateStart(LocalDate date_start){this.date_start = date_start;}
 
-    public LocalDate getDateEnd(){
-        return date_end;
-    }
-    public void setDateEnd(LocalDate date_end){
-        this.date_end = date_end;
-    }
+    public LocalDate getDateEnd(){return date_end;}
+    public void setDateEnd(LocalDate date_end){this.date_end = date_end;}
 
     public AttendanceType getType() { return type; }
     public void setType(AttendanceType type) { this.type = type; }
@@ -61,11 +49,5 @@ public class Presence {
     PRESENT,
     ABSENCE,
     DAY_OFF
-    }
-
-
-
-
-
-    
+    }    
 }

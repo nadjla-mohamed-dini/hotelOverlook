@@ -18,32 +18,18 @@ public class Employee {
     private String name;
     private String lastName;
     
-
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
 
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public String getLastName() {return lastName;}
+    public void setLastName(String lastName) {this.lastName = lastName;}
     
     public AppUser getUser(){return user;}
     public void setUser(AppUser user) {this.user = user;} 

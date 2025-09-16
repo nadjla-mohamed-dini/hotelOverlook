@@ -24,24 +24,12 @@ public class Installation {
         this.type = type;
     }
 
-    public int getCapacity(){
-        return capacity;
-    }
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
+    public int getCapacity(){return capacity;}
+    public void setCapacity(int capacity) {this.capacity = capacity;}
 
-    public String getType(){
-        return type;
-    }
-    public void setType(String type){
-        this.type = type;
-    }
+    public String getType(){return type;}
+    public void setType(String type){this.type = type;}
 
-    public Long getId(){
-        return id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+    public Long getId(){return id;}
+    public void setId(Long id){this.id = id;}
 }

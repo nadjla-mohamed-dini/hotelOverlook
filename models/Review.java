@@ -3,6 +3,7 @@ package com.example.demo.models;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,59 +24,30 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-    @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Event event;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation; 
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
-    public LocalDate getDate() {
-        return date;
-    }
-    public void setDate(LocalDate date){
-        this.date = date;
-    }
+    public LocalDate getDate() {return date;}
+    public void setDate(LocalDate date){this.date = date;}
 
-    public int getRating(){
-        return rating;
-    }
-    public void setRating(int rating){
-        this.rating = rating;
+    public int getRating(){return rating;}
+    public void setRating(int rating){this.rating = rating;}
+
+    public String getComment(){return comment;}
+    public void setComment(String comment){this.comment = comment;}
+
+    public Client getClient(){return client;}
+    public void setClient(Client client){this.client = client;}
+
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public String getComment(){
-        return comment;
-    }
-    public void setComment(String comment){
-        this.comment = comment;
-    }
-
-    public Client getClient(){
-        return client;
-    }
-    public void setClient(Client client){
-        this.client = client;
-    }
-
-    public Room getRoom(){
-        return room;
-    }
-    public void setRoom(Room room){
-        this.room = room;
-    }
-
-    public Event getEvent(){
-        return event;
-    }
-    public void setEvent(Event event){
-        this.event = event;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }

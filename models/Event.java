@@ -3,6 +3,7 @@ package com.example.demo.models;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,44 +21,27 @@ public class Event {
     private LocalDate date;
     private String name;
     private int capacity;
-    @ManyToOne
-    @JoinColumn(name="client_id")
-    private Client client;
+    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id", nullable = true)
+    private Reservation reservation;
 
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
+    public Long getId() {return id;}
+    public void setId(Long id){this.id = id;}
 
-    public LocalDate getDate(){
-        return date;
-    }
-    public void setDate(LocalDate date){
-        this.date = date;
-    }
+    public LocalDate getDate(){return date;}
+    public void setDate(LocalDate date){this.date = date;}
 
-    public int getCapacity(){
-        return capacity;
-    }
-    public void setCapacity(int capacity){
-        this.capacity = capacity;
-    }
+    public int getCapacity(){return capacity;}
+    public void setCapacity(int capacity){this.capacity = capacity;}
 
-    public String getName(){
-        return name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+    public String getName(){return name;}
+    public void setName(String name){this.name = name;}
 
-    public Client getClient(){
-        return client;
-    }
-    public void setClient(Client client){
-        this.client = client;
-    }
+
+    public Reservation getReservation() { return reservation;}
+    public void setReservation(Reservation reservation) { this.reservation = reservation; }
 
 }

@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,50 +17,66 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private int capacity;
-    private int fidelity;
+    private String number;   
+    private String type;     
+    private double price;   
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation; 
 
-    public Room() {
-    }
+    public Room() {}
 
-    public Long getId () {
+    public Long getId() {
         return id;
     }
-    public void setId (Long id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public String getNumber() {
+        return number;
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public int getFidelity() {
-        return fidelity;
-    }
-    public void setFidelity(int fidelity) {
-        this.fidelity = fidelity;
+    public String getType() {
+        return type;
     }
 
-    public Client getClient(){
-        return client;
+    public void setType(String type) {
+        this.type = type;
     }
-    public void setClient(Client client){
-        this.client = client;
+
+    public double getPrice() {
+        return price;
     }
-    
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    /**
+     * Calcule les points fidélité en fonction du type de chambre
+     * Simple = 5, Double = 10, Suite = 20
+     */
+    public int getFidelityPoints() {
+        return switch (type.toLowerCase()) {
+            case "simple" -> 5;
+            case "double" -> 10;
+            case "suite" -> 20;
+            default -> 0;
+        };
+    }
 }
