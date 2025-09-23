@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f0f2f5;
+        }
+
+        nav {
+            background: #fff;
+            padding: 20px 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menuItems {
+            list-style: none;
+            display: flex;
+            gap: 40px; /* espace entre les items */
+            margin: 0;
+            padding: 0;
+        }
+
+        .menuItems li a {
+            position: relative;
+            text-decoration: none;
+            color: #555;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        /* Ligne animée */
+        .menuItems li a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -3px; 
+            width: 0;
+            height: 2px;
+            background-color: #8254ff;
+            transition: width 0.3s ease;
+        }
+
+        /* Effet hover */
+        .menuItems li a:hover {
+            color: #8254ff;
+        }
+
+        .menuItems li a:hover::after {
+            width: 100%;
+        }
+
+        /* Style bouton déconnexion */
+        .logout-btn {
+            background-color: #8254ff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background-color: #6133cc;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="menuItems">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reservation</a></li>
+            <li><a th:href="@{/reviews}">Review</a></li>
+            <li><a href="#">My Profile</a></li>
+        </ul>
+        <!-- Bouton se déconnecter -->
+        <a href="index.html" class="logout-btn">Log out</a>
+    </nav>
+</body>
+</html>
