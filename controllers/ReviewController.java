@@ -15,9 +15,11 @@ import com.example.demo.models.AppUser;
 import com.example.demo.models.Client;
 import com.example.demo.models.Reservation;
 import com.example.demo.models.Review;
+import com.example.demo.models.ReviewResponse;
 import com.example.demo.repositories.ClientRepository;
 import com.example.demo.repositories.ReservationRepository;
 import com.example.demo.repositories.ReviewRepository;
+import com.example.demo.repositories.ReviewResponseRepository;
 import com.example.demo.repositories.UserRepository;
 
 @Controller
@@ -27,15 +29,18 @@ public class ReviewController {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
+    private final ReviewResponseRepository reviewResponseRepository;
 
     public ReviewController(ReviewRepository reviewRepository,
                             ReservationRepository reservationRepository,
                             UserRepository userRepository,
-                            ClientRepository clientRepository) {
+                            ClientRepository clientRepository,
+                            ReviewResponseRepository reviewResponseRepository) {
         this.reviewRepository = reviewRepository;
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
+        this.reviewResponseRepository = reviewResponseRepository;                        
     }
 
     
@@ -48,20 +53,21 @@ public class ReviewController {
         List<Reservation> userReservations = List.of();
 
         if (user != null) {
-            // Trouver le client par user
             Client client = clientRepository.findByUser(user).orElse(null);
-
             if (client != null) {
                 userReservations = reservationRepository.findByClientId(client.getId());
             }
         }
 
+        model.addAttribute("currentUser", user);  // <-- Ajouté ici
         model.addAttribute("reviews", reviewRepository.findAll());
         model.addAttribute("reservations", userReservations);
+        model.addAttribute("reviewResponse", new ReviewResponse());
         model.addAttribute("review", new Review());
 
         return "reviews";
     }
+
 
 
     @PostMapping("/reviews/add")
@@ -75,5 +81,24 @@ public class ReviewController {
         }
 
         return "redirect:/reviews";
+    }
+
+    @PostMapping("/reviews/response")
+    public String responseToReview(@RequestParam Long reviewId,
+                                   @RequestParam String response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        AppUser user = userRepository.findByEmail(email).orElse(null);
+        if (user != null && user.getRole().equals("ADMIN")) {
+            Review review = reviewRepository.findById(reviewId).orElse(null);
+            if (review != null) {
+                ReviewResponse reviewResponse = new ReviewResponse();
+                reviewResponse.setReview(review);
+                reviewResponse.setResponse(response);
+                reviewResponseRepository.save(reviewResponse);
+            }
+        }
+        return "redirect:/reviews"; 
+
     }
 }
