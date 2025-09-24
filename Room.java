@@ -1,13 +1,16 @@
-package com.example.demo1.models;
-import jakarta.persistence.*;
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.FetchType;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.OneToOne; // Je dois run pour ajouter un truc que Nadjla m'a envoyer
-// import jakarta.persistence.Table;
+package com.example.demo.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rooms")
@@ -17,14 +20,13 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String number;
-    private String type; // simple, double, suite.
-    private Double price;
-    private Boolean available;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation; 
+    private String number;   
+    private String type;     
+    //private double price;
+       
+    // changer la relation sur postgres et dans le mcd et mpd 
+    @OneToMany(mappedBy="room", fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    private List<Reservation> reservation = new ArrayList<>();
 
     public Room() {}
 
@@ -51,22 +53,14 @@ public class Room {
     public void setType(String type) {
         this.type = type;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Reservation getReservation() {
+    public List<Reservation> getReservations() {
         return reservation;
     }
 
-    public void setReservation(Reservation reservation) {
+    public void setReservations(List<Reservation> reservation) {
         this.reservation = reservation;
     }
+
 
     /**
      * Calcule les points fidélité en fonction du type de chambre
@@ -79,13 +73,5 @@ public class Room {
             case "suite" -> 20;
             default -> 0;
         };
-    }
-
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
     }
 }
