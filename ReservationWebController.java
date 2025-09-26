@@ -9,17 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/api/reservations")
-public class ReservationController {
+@RequestMapping("/reservations")
+public class ReservationWebController {
 
     private final ReservationService reservationService;
     private final ClientService clientService;
     private final RoomService roomService;
 
-    public ReservationController(ReservationService reservationService,
+    public ReservationWebController(ReservationService reservationService,
                                     ClientService clientService,
                                     RoomService roomService) {
         this.reservationService = reservationService;
@@ -27,15 +25,14 @@ public class ReservationController {
         this.roomService = roomService;
     }
 
-    // Liste des réservations
+    // ✅ Liste des réservations
     @GetMapping
     public String listReservations(Model model) {
-        List<Reservation> reservations = reservationService.getAll();
-        model.addAttribute("reservations", reservations);
-        return "list"; // Thymeleaf template list.html
+        model.addAttribute("reservations", reservationService.getAll()); // la liste
+        return "list"; // list.html
     }
 
-    // Détail d'une réservation
+    // ✅ Détail d'une réservation
     @GetMapping("/{id}")
     public String viewReservation(@PathVariable Long id, Model model) {
         Reservation res = reservationService.getById(id);
@@ -43,21 +40,22 @@ public class ReservationController {
             return "redirect:/reservations";
         }
         model.addAttribute("reservation", res);
-        return "view"; // Thymeleaf template view.html
+        return "view"; // view.html
     }
 
-    // Formulaire de création
+    // ✅ Formulaire de création
     @GetMapping("/new")
     public String newReservationForm(Model model) {
         model.addAttribute("reservation", new Reservation());
         model.addAttribute("clients", clientService.getAll());
         model.addAttribute("rooms", roomService.getAll());
-        return "reservations/form"; // Thymeleaf template form.html
+        return "form"; // form.html (pas "reservations/form")
     }
 
-    // Création d'une réservation
+    // ✅ Création d'une réservation
     @PostMapping
-    public String createReservation(@RequestParam Long client, @RequestParam Long room,
+    public String createReservation(@RequestParam Long client,
+                                    @RequestParam Long room,
                                     @ModelAttribute Reservation reservation) {
         reservation.setClient(clientService.getById(client));
         reservation.setRoom(roomService.getById(room));
@@ -65,7 +63,7 @@ public class ReservationController {
         return "redirect:/reservations";
     }
 
-    // Suppression d'une réservation
+    // ✅ Suppression
     @PostMapping("/{id}/delete")
     public String deleteReservation(@PathVariable Long id) {
         reservationService.delete(id);

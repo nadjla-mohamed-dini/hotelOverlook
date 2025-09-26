@@ -28,14 +28,14 @@ public class RoomController {
     // POST créer une chambre
     @PostMapping
     public Room create(@RequestBody Room room) {
-        return roomService.save(room);
+        return roomService.create(room);
     }
 
     // PUT modifier une chambre
     @PutMapping("/{id}")
     public Room update(@PathVariable Long id, @RequestBody Room room) {
         room.setId(id);
-        return roomService.save(room);
+        return roomService.update(id, room);
     }
 
     // DELETE supprimer une chambre
