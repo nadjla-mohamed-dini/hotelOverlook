@@ -1,6 +1,6 @@
-package com.example.demo.models;
+package com.example.demo1.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,10 +24,10 @@ public class Reservation {
     private Long id;
 
     @Column(name = "date_start", nullable = false)
-    private LocalDateTime dateStart;
+    private LocalDate dateStart;
 
     @Column(name = "date_end", nullable = false)
-    private LocalDateTime dateEnd;
+    private LocalDate dateEnd;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,9 +40,11 @@ public class Reservation {
     // ajouter la relation sur post gres aussi dans le mcd et mpd 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="room_id", nullable=false)
-    private Room room;
-
+    private Room room
+    ;
+    @Column(name="paid_room_price")
     private double paidRoomPrice;
+    @Column(name="paid_event_price")
     private double paidEventPrice;
 
 
@@ -62,11 +64,11 @@ public class Reservation {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getDateStart() { return dateStart; }
-    public void setDateStart(LocalDateTime dateStart) { this.dateStart = dateStart; }
+    public LocalDate getDateStart() { return dateStart; }
+    public void setDateStart(LocalDate dateStart) { this.dateStart = dateStart; }
 
-    public LocalDateTime getDateEnd() { return dateEnd; }
-    public void setDateEnd(LocalDateTime dateEnd) { this.dateEnd = dateEnd; }
+    public LocalDate getDateEnd() { return dateEnd; }
+    public void setDateEnd(LocalDate dateEnd) { this.dateEnd = dateEnd; }
 
     public Status getStatus() { return status; }
     public void setStatus(Status status) { this.status = status; }
