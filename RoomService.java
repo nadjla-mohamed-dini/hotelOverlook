@@ -21,16 +21,14 @@ public class RoomService {
         return roomRepository.findById(id).orElse(null);
     }
 
-    public Room save(Room room) {
+    public Room create(Room room) {
         return roomRepository.save(room);
     }
 
-    public Room updateRoom(Long id, Room roomDetails) {
+    public Room update(Long id, Room roomDetails) {
         return roomRepository.findById(id).map(room -> {
             room.setNumber(roomDetails.getNumber());
             room.setType(roomDetails.getType());
-            room.setPrice(roomDetails.getPrice());
-            room.setAvailable(roomDetails.getAvailable());
             return roomRepository.save(room);
         }).orElseThrow(() -> new RuntimeException("Room not found with id " + id));
     }
