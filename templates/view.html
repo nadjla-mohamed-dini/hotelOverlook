@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Détail réservation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container py-4">
+
+    <a th:href="@{/reservations}" class="btn btn-link mb-3">← Retour à la liste</a>
+
+    <h2>Réservation #<span th:text="${reservation.id}">1</span></h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Client</dt>
+        <dd class="col-sm-9" th:text="${reservation.client != null ? reservation.client.name : '—'}">Nom client</dd>
+
+        <dt class="col-sm-3">Chambre / Événement</dt>
+        <dd class="col-sm-9" th:text="${reservation.reservationLabel}">Objet</dd>
+
+        <dt class="col-sm-3">Début</dt>
+        <dd class="col-sm-9" th:text="${reservation.dateStart != null ? #temporals.format(reservation.dateStart, 'yyyy-MM-dd HH:mm') : '—'}">...</dd>
+
+        <dt class="col-sm-3">Fin</dt>
+        <dd class="col-sm-9" th:text="${reservation.dateEnd != null ? #temporals.format(reservation.dateEnd, 'yyyy-MM-dd HH:mm') : '—'}">...</dd>
+
+        <dt class="col-sm-3">Statut</dt>
+        <dd class="col-sm-9">
+            <span th:switch="${reservation.status}">
+                <span th:case="'PENDING'" class="badge bg-warning text-dark">En attente</span>
+                <span th:case="'CONFIRMED'" class="badge bg-success">Confirmée</span>
+                <span th:case="'CANCELLED'" class="badge bg-danger">Annulée</span>
+                <span th:case="'COMPLETED'" class="badge bg-secondary">Terminée</span>
+                <span th:case="*">—</span>
+            </span>
+        </dd>
+    </dl>
+
+</div>
+<footer>
+    &copy; 2025 Overlook Hotel. Tous droits réservés.
+</footer>
+</body>
+</html>

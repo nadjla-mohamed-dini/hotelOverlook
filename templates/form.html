@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Nouvelle réservation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container py-4">
+  <a th:href="@{/reservations}" class="btn btn-link">← Retour à la liste</a>
+  <h2 th:text="${reservation.id != null ? 'Modifier la réservation' : 'Nouvelle réservation'}"></h2>
+
+  <form th:action="@{/reservations}" th:object="${reservation}" method="post">
+
+    <!-- Sélection du client -->
+    <div class="mb-3">
+      <label for="client" class="form-label">Client</label>
+      <select name="client" class="form-select" id="client" required>
+        <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.name + ' ' + c.lastName}"></option>
+      </select>
+    </div>
+
+    <!-- Sélection de la chambre -->
+    <div class="mb-3">
+      <label for="room" class="form-label">Chambre</label>
+      <select name="room" class="form-select" id="room" required>
+        <option th:each="r : ${rooms}" th:value="${r.id}" th:text="${r.type + ' - n° ' + r.number}"></option>
+      </select>
+    </div>
+
+    <!-- Date de début -->
+    <div class="mb-3">
+      <label for="dateStart" class="form-label">Date de début</label>
+      <input type="datetime-local" th:field="*{dateStart}" class="form-control" id="dateStart" required/>
+    </div>
+
+    <!-- Date de fin -->
+    <div class="mb-3">
+      <label for="dateEnd" class="form-label">Date de fin</label>
+      <input type="datetime-local" th:field="*{dateEnd}" class="form-control" id="dateEnd" required/>
+    </div>
+
+    <!-- Statut -->
+    <div class="mb-3">
+      <label for="status" class="form-label">Statut</label>
+      <select th:field="*{status}" class="form-select" id="status">
+        <option value="PENDING">PENDING</option>
+        <option value="CONFIRMED">CONFIRMED</option>
+        <option value="CANCELLED">CANCELLED</option>
+        <option value="COMPLETED">COMPLETED</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+</div>
+
+</body>
+</html>

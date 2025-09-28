@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6"
+      lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews - Overlook Hotel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; background: #f0f2f5; margin: 20px; }
+        h1, h2 { text-align: center; color: #333; }
+        form { background: white; padding: 20px; max-width: 600px; margin: 20px auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
+        form input, form select, form textarea, form button { width: 100%; padding: 10px; margin: 8px 0; font-size: 1rem; }
+        form button { background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        form button:hover { background: #0056b3; }
+        .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-start; }
+        .star-rating input { display: none; }
+        .star-rating label { font-size: 2rem; color: #ccc; cursor: pointer; margin-right: 5px; }
+        .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: gold; }
+        .review-list { max-width: 700px; margin: 20px auto; }
+        .review-item { background: white; padding: 15px 20px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; }
+        .review-item .rating { color: gold; }
+        .review-item .admin-response { background: #f9f9f9; padding: 10px; margin-top: 10px; border-left: 4px solid #007bff; border-radius: 4px; }
+        .review-item form textarea { margin-top: 5px; resize: vertical; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar dynamique selon rôle -->
+<div sec:authorize="hasRole('ADMIN')" th:replace="~{fragments/navbar :: admin-navbar}"></div>
+<div sec:authorize="hasRole('EMPLOYEE')" th:replace="~{fragments/navbar :: employee-navbar}"></div>
+<div sec:authorize="hasRole('CLIENT')" th:replace="~{fragments/navbar :: client-navbar}"></div>
+
+
+<h1>Ajouter un avis</h1>
+
+<!-- Formulaire pour ajouter une review -->
+<form th:action="@{/reviews/add}" method="post" th:object="${review}">
+    <label for="reservation">Réservation :</label>
+    <select id="reservation" name="reservationId" required>
+        <option value="">-- Sélectionner une réservation --</option>
+        <option th:each="res : ${reservations}"
+                th:value="${res.id}"
+                th:text="'Réservation #' + ${res.id} + ' - ' + ${res.reservationLabel}">
+        </option>
+    </select>
+
+    <label for="comment">Commentaire :</label>
+    <textarea id="comment" th:field="*{comment}" rows="3" required></textarea>
+
+    <label>Note :</label>
+    <div class="star-rating">
+        <input type="radio" id="star5" th:field="*{rating}" value="5" required><label for="star5">★</label>
+        <input type="radio" id="star4" th:field="*{rating}" value="4"><label for="star4">★</label>
+        <input type="radio" id="star3" th:field="*{rating}" value="3"><label for="star3">★</label>
+        <input type="radio" id="star2" th:field="*{rating}" value="2"><label for="star2">★</label>
+        <input type="radio" id="star1" th:field="*{rating}" value="1"><label for="star1">★</label>
+    </div>
+
+    <button type="submit">Ajouter l'avis</button>
+</form>
+
+<!-- Liste des reviews -->
+<div class="review-list">
+    <h2>Liste des avis</h2>
+
+    <div th:if="${#lists.isEmpty(reviews)}">
+        <p class="text-center"><i>Aucun avis pour le moment.</i></p>
+    </div>
+
+    <div th:each="rev : ${reviews}" class="review-item">
+        <p><b>Client :</b> <span th:text="${rev.client?.user?.email}">email@example.com</span></p>
+        <p><b>Commentaire :</b> <span th:text="${rev.comment}">Commentaire</span></p>
+
+        <!-- Affichage note -->
+        <p class="rating">
+            <span th:each="i : ${#numbers.sequence(1, rev.rating)}">★</span>
+            <span th:each="i : ${#numbers.sequence(rev.rating+1,5)}" style="color:#ccc">★</span>
+        </p>
+
+        <!-- Réponse admin si existante -->
+        <div th:if="${rev.response != null}" class="admin-response">
+            <p><b>Réponse admin :</b> <span th:text="${rev.response.response}">Réponse</span></p>
+        </div>
+
+        <!-- Formulaire admin si pas encore de réponse -->
+        <form sec:authorize="hasRole('ADMIN')" th:if="${rev.response == null}" th:action="@{/reviews/response}" method="post">
+            <input type="hidden" name="reviewId" th:value="${rev.id}" />
+            <textarea name="response" rows="2" placeholder="Répondre à l'avis"></textarea>
+            <button type="submit">Répondre</button>
+        </form>
+
+        <!-- Message pour client si pas de réponse -->
+        <div sec:authorize="hasRole('CLIENT')" th:if="${rev.response == null}">
+            <p><i>Aucune réponse admin pour le moment.</i></p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Bootstrap -->
+<footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+        <!-- Texte principal -->
+        <p class="mb-2">&copy; 2025 Overlook Hotel. Tous droits réservés.</p>
+
+        <!-- Liens sociaux avec icônes -->
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#" class="text-light fs-5" target="_blank" title="Facebook">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a href="#" class="text-light fs-5" target="_blank" title="Twitter">
+                <i class="bi bi-twitter"></i>
+            </a>
+            <a href="#" class="text-light fs-5" target="_blank" title="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="#" class="text-light fs-5" target="_blank" title="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<!-- CSS supplémentaire pour hover -->
+<style>
+footer a:hover {
+    color: #ffc107; /* Couleur dorée au survol */
+    transition: color 0.3s;
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

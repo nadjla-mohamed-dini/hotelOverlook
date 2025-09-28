@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Chambres</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Liste des Chambres</h2>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>Prix</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.number}"></td>
+                <td th:text="${room.type}"></td>
+                <td th:text="${roomPricesMap[room.id]} + ' €'"></td>
+                <td class="text-center">
+                    <a th:href="@{/admin/rooms/edit/{id}(id=${room.id})}" class="btn btn-sm btn-primary me-1">
+                        Modifier
+                    </a>
+                    <a th:href="@{/admin/rooms/delete/{id}(id=${room.id})}" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette chambre ?');">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a th:href="@{/admin}" class="btn btn-secondary">⬅ Retour</a>
+        <a th:href="@{/admin/rooms/add}" class="btn btn-success">➕ Ajouter une chambre</a>
+    </div>
+</div>
+
+</body>
+</html>

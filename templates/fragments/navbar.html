@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
+<head></head>
+<body>
+    <!-- Navbar Admin -->
+    <div th:fragment="admin-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-primary" href="#">Overlook Hotel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAdmin">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAdmin">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" :href="#">Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/reviews}">Reviews</a></li>
+                    </ul>
+                    <a th:href="@{/auth/logout}" class="btn btn-primary">Déconnexion</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Navbar Employee -->
+    <div th:fragment="employee-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-primary" href="#">Overlook Hotel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEmp">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavEmp">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/employee/dashboard}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/employee/presence}">Presence</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/reviews}">Reviews</a></li>
+                    </ul>
+                    <a th:href="@{/auth/logout}" class="btn btn-primary">Déconnexion</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Navbar Client -->
+    <div th:fragment="client-navbar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-primary" href="#">Overlook Hotel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavClient">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavClient">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/home}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/client/reservations}">Mes Réservations</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/reviews}">Avis</a></li>
+                    </ul>
+                    <a th:href="@{/auth/logout}" class="btn btn-primary">Déconnexion</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>
